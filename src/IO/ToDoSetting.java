@@ -10,6 +10,8 @@ import java.io.Serializable;
 /**
  *
  * @author Kiani
+ * 
+ * 
  */
 public class ToDoSetting implements Serializable{
     private File file;

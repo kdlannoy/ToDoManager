@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *Schrijft de items weg naar een gespecifieerde locatie
  * @author Kiani
  */
 public class ToDoWriter {
@@ -40,6 +40,7 @@ public class ToDoWriter {
             ObjectOutput in = new ObjectOutputStream(buffer);
             
             try {
+                //EDIT lelijke code, oplossen!
                 for (ToDoItem toDoItem : items) {
                     in.writeObject(toDoItem);
                 }

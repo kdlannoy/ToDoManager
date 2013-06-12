@@ -22,6 +22,10 @@ import javax.swing.JFrame;
 public class ToDoManager {
 
     /**
+     * 
+     * EDIT Er moet nog een menu komen waar we de settings kunnen veranderen (bv waar de settings worden opgeslaan, waar de lijst wordt opgeslaan)
+     * 
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -30,12 +34,6 @@ public class ToDoManager {
         
         
         frame.getContentPane().add(new ToDoListPanel(model));
-        
-        
-        
-        
-        
-        
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

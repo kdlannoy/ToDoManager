@@ -31,7 +31,7 @@ public class SettingsWriter {
     }
     
     public static void write(){
-        ToDoType type1 = new ToDoType("School");
+        
         ToDoWriter writer = new ToDoWriter(new File("todo.list"));
         ArrayList<ToDoItem> lijstje = new ArrayList<ToDoItem>();
         writer.writeItems(lijstje);

@@ -75,6 +75,7 @@ public class ToDoListPanel extends JPanel {
         model.writeItems();
     }
 
+    //maakt een JFrame waarin je een item kan specifieren en toevoegen
     public void createItem() {
         JFrame frm = new JFrame("Item Creator");
         JLabel lbl = new JLabel();

@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 /**
  *
  * @author Kiani
+ * 
+ * Laad de todo items uit het bestand die gespecifieerd is in ToDoSetting
  */
 public class ToDoLoader {
 

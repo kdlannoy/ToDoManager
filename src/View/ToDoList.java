@@ -43,6 +43,7 @@ public class ToDoList extends JList implements ChangeListener {
 
     public void updateList() {
 
+        // EDIT, eens Filter geïmplementeerd is, moeten we ervoor zorgen dat in de lijs enkel nog de Types worden weergegeven die in de filter voorkomen
         lijstmd.removeAllElements();
         this.removeAll();
         System.out.println(model.getTypes());
@@ -56,7 +57,6 @@ public class ToDoList extends JList implements ChangeListener {
             // add all tasks
             for (ToDoItem item : model.getItems()) {
                 if (item.getType() == type) {
-                    ((MyCellRenderer) this.getCellRenderer()).setItem();
                     lijstmd.addElement(item);
                 }
             }
@@ -87,10 +87,13 @@ class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
 
         Color background = null;
         Color foreground = null;
+        
+        //als het item geselecteerd is (om te kunnen verwijderen bv)
         if (isSelected) {
             background = Color.DARK_GRAY;
             foreground = Color.BLUE;
         } else {
+            //de categoriën / type in ander kleur
             if (value instanceof ToDoType) {
 
                 background = Color.BLUE;
@@ -104,15 +107,5 @@ class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
         setForeground(foreground);
 
         return this;
-    }
-
-    public void setType() {
-        setBackground(Color.BLUE);
-        setForeground(Color.WHITE);
-    }
-
-    public void setItem() {
-        setBackground(Color.WHITE);
-        setForeground(Color.BLACK);
     }
 }

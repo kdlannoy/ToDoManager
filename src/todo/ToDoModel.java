@@ -94,7 +94,10 @@ public class ToDoModel extends DefaultListModel {
         }
         return false;
     }
-
+    
+    /**
+     * Schrijft de huidige lijst van items weg naar het bestand gespecifieerd in de settings
+     */
     public void writeItems() {
         System.out.println("Items geschreven naar " + settings.getFile());
         ToDoWriter writer = new ToDoWriter(settings.getFile());
@@ -133,6 +136,7 @@ public class ToDoModel extends DefaultListModel {
     }
 }
 
+//klasse om twee ToDoItems te kunnen vergelijken (om te kunnen sorteren)
 class CustomComparator implements Comparator<ToDoItem> {
     @Override
     public int compare(ToDoItem o1, ToDoItem o2) {

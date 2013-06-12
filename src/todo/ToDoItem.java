@@ -11,6 +11,10 @@ import java.util.Date;
  *
  * @author Kiani
  * 
+ * EDIT hier moet nog een Filter worden toegepast, net als Prioriteit/importance en dueDate
+ * 
+ * 
+ * 
  * @param id, defines the id of the ToDoItem
  * @param type, defines the type of the item
  * @param dueDate defines the date when the item should be done

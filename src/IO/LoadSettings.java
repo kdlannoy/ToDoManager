@@ -17,6 +17,8 @@ import todomanager.SettingsWriter;
 /**
  *
  * @author Kiani
+ * 
+ * Wordt altijd opgeroepen in het begin van het programma, en laad de instellingen (waar bv de lijst staat)
  */
 public class LoadSettings {
 

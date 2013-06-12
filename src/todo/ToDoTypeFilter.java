@@ -7,7 +7,7 @@ package todo;
 import java.util.ArrayList;
 
 /**
- *
+ *EDIT nog te implementeren
  * @author Kiani
  */
 public class ToDoTypeFilter {
