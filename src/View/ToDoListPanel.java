@@ -45,18 +45,27 @@ public class ToDoListPanel extends JPanel {
             }
         });
 
-        JButton removebtn = new JButton(new AbstractAction("Remove item") {
+        AbstractAction t = new AbstractAction("Remove item") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     removeItemModel((ToDoItem) todolijst.getSelectedValue());
                     writeModel();
                 } catch (Exception ex) {
-                    System.out.println("Geen item geselecteerd");
+                    System.out.println("Geen item geselecteerd:\t"+ex);
                 }
                 todolijst.updateList();
             }
-        });
+        };
+        
+        //zorg dat je met delete dingen kan verwijderen
+        todolijst.getInputMap().put(KeyStroke.getKeyStroke("DELETE"),"DELETE");
+        todolijst.getActionMap().put("DELETE", t);
+        
+        this.getInputMap().put(KeyStroke.getKeyStroke("DELETE"),"DELETE");
+        this.getActionMap().put("DELETE", t);
+        
+        JButton removebtn = new JButton(t);
         this.add(button);
         this.add(removebtn);
     }
@@ -77,7 +86,7 @@ public class ToDoListPanel extends JPanel {
         model.writeItems();
     }
 
-    //maakt een JFrame waarin je een item kan specifieren en toevoegen
+    //maakt een JFrame waarin je een item kan specifieren en toevoegen (Item Creator)
     public void createItem() {
         final JFrame frm = new ItemCreator(model);
         frm.setSize(300, 170);
@@ -89,6 +98,7 @@ public class ToDoListPanel extends JPanel {
         KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
         Action escapeAction = new AbstractAction() {
             // close the frame when the user presses escape
+            @Override
             public void actionPerformed(ActionEvent e) {
                 frm.dispose();
             }

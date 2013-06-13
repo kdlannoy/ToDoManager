@@ -45,14 +45,10 @@ public class ToDoLoader {
                 while (true) {
                     item = (ToDoItem) in.readObject();
                     items.add(item);
-
-                }
-                
-                
+                }                
             } finally {
                 in.close();
             }
-
         } catch (EOFException ex){
             
         }catch (FileNotFoundException ex) {
@@ -62,8 +58,6 @@ public class ToDoLoader {
         } catch (IOException ex) {
             Logger.getLogger(ToDoLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        System.out.println("Items:"+items);
     }
 
     public ArrayList<ToDoItem> getItems() {

@@ -22,14 +22,15 @@ import todomanager.SettingsWriter;
  */
 public class LoadSettings {
 
+    public static String SETTINGS_FILE_NAME = "settings.ini";
     public static ToDoSetting loadSettings() {
         ToDoSetting settings = new ToDoSetting();
         try {
-            if (!new File("settings.ini").isFile()) {
+            if (!new File(SETTINGS_FILE_NAME).isFile()) {
                 SettingsWriter.write();
                 settings.setFile(null);
             } else {
-                InputStream file = new FileInputStream(new File("settings.ini"));
+                InputStream file = new FileInputStream(new File(SETTINGS_FILE_NAME));
                 ObjectInput in = new ObjectInputStream(file);
 
                 try {

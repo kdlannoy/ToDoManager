@@ -46,14 +46,9 @@ public class ToDoList extends JList implements ChangeListener {
         // EDIT, eens Filter geïmplementeerd is, moeten we ervoor zorgen dat in de lijs enkel nog de Types worden weergegeven die in de filter voorkomen
         lijstmd.removeAllElements();
         this.removeAll();
-        System.out.println(model.getTypes());
         // add all types
         for (ToDoType type : model.getTypes()) {
-
-
             lijstmd.addElement(type);
-
-
             // add all tasks
             for (ToDoItem item : model.getItems()) {
                 if (item.getType() == type) {

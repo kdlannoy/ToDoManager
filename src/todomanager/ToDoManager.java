@@ -4,15 +4,8 @@
  */
 package todomanager;
 
-import IO.LoadSettings;
-import IO.ToDoLoader;
-import IO.ToDoWriter;
 import View.ToDoListPanel;
 import todo.ToDoModel;
-import todo.ToDoType;
-import todo.ToDoItem;
-import java.io.File;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**

@@ -4,6 +4,7 @@
  */
 package todomanager;
 
+import IO.LoadSettings;
 import IO.ToDoLoader;
 import IO.ToDoSetting;
 import IO.ToDoWriter;
@@ -26,6 +27,7 @@ import todo.ToDoType;
  * @author Kiani
  */
 public class SettingsWriter {
+    
     public static void main(String[] args){
         write();
     }
@@ -37,7 +39,7 @@ public class SettingsWriter {
         writer.writeItems(lijstje);
         
         try {
-            OutputStream file = new FileOutputStream(new File("settings.ini"));
+            OutputStream file = new FileOutputStream(new File(LoadSettings.SETTINGS_FILE_NAME));
             OutputStream buffer = new BufferedOutputStream(file);
             ObjectOutput out = new ObjectOutputStream(buffer);
             
