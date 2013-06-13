@@ -4,21 +4,17 @@
  */
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import todo.ToDoItem;
 import todo.ToDoModel;
 
@@ -31,6 +27,7 @@ public class ToDoListPanel extends JPanel {
     private ToDoList todolijst;
     private ToDoModel model;
     private JScrollPane sp;
+    private JButton button;
 
     public ToDoListPanel(ToDoModel model) {
         super();
@@ -41,17 +38,14 @@ public class ToDoListPanel extends JPanel {
         add(sp);
 
         //action nu
-        JButton button = new JButton("Add item");
-
-        button.addActionListener(new ActionListener() {
+        button = new JButton(new AbstractAction("Add new item") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 createItem();
             }
         });
 
-        JButton removebtn = new JButton("Remove item");
-        removebtn.addActionListener(new ActionListener() {
+        JButton removebtn = new JButton(new AbstractAction("Remove item") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -65,6 +59,10 @@ public class ToDoListPanel extends JPanel {
         });
         this.add(button);
         this.add(removebtn);
+    }
+
+    public JButton getButton() {
+        return button;
     }
 
     protected void removeItemModel(ToDoItem item) {
@@ -81,10 +79,23 @@ public class ToDoListPanel extends JPanel {
 
     //maakt een JFrame waarin je een item kan specifieren en toevoegen
     public void createItem() {
-        JFrame frm = new ItemCreator(model);
+        final JFrame frm = new ItemCreator(model);
         frm.setSize(300, 170);
         frm.setVisible(true);
         frm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        
+        //zorg ervoor dat de frame wordt gesloten door escape in te drukken
+        KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+        Action escapeAction = new AbstractAction() {
+            // close the frame when the user presses escape
+            public void actionPerformed(ActionEvent e) {
+                frm.dispose();
+            }
+        };
+        frm.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+        frm.getRootPane().getActionMap().put("ESCAPE", escapeAction);
+
 
     }
 }

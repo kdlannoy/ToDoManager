@@ -32,8 +32,10 @@ public class ToDoManager {
         JFrame frame = new JFrame("ToDoList");
         ToDoModel model = new ToDoModel();
         
+        ToDoListPanel panel = new ToDoListPanel(model);
+        frame.getContentPane().add(panel);
         
-        frame.getContentPane().add(new ToDoListPanel(model));
+        frame.getRootPane().setDefaultButton(panel.getButton());
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
