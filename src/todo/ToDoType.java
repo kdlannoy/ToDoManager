@@ -10,13 +10,14 @@ import java.io.Serializable;
  *
  * @author Kiani
  */
-public class ToDoType implements Serializable {
+public class ToDoType extends ToDoObject implements Serializable {
     private String type;
     private static int numberOfTypes;
 
     public ToDoType(String type) {
         this.type = type;
         numberOfTypes++;
+        item = false;
     }
 
     public String getType() {

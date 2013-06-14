@@ -10,6 +10,7 @@ import todo.ToDoTypeFilter;
 import todo.ToDoItem;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -41,11 +42,21 @@ public class ToDoList extends JList implements ChangeListener {
         updateList();
     }
 
+    @Override
+    public Object getSelectedValue() {
+        return model.getItemByString(super.getSelectedValue().toString());
+
+    }
+
     public void updateList() {
 
         // EDIT, eens Filter geïmplementeerd is, moeten we ervoor zorgen dat in de lijs enkel nog de Types worden weergegeven die in de filter voorkomen
         lijstmd.removeAllElements();
         this.removeAll();
+        
+        //add headers
+        lijstmd.addElement("Id   Topic");
+        
         // add all types
         for (ToDoType type : model.getTypes()) {
             lijstmd.addElement(type);
@@ -56,8 +67,8 @@ public class ToDoList extends JList implements ChangeListener {
                 }
             }
         }
-        
-        
+
+
 
 
 
@@ -78,29 +89,51 @@ class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
             boolean isSelected,
             boolean cellHasFocus) {
 
-        setText(value.toString());
-
         Color background = null;
         Color foreground = null;
-        
-        //als het item geselecteerd is (om te kunnen verwijderen bv)
-        if (isSelected) {
-            background = Color.DARK_GRAY;
-            foreground = Color.BLUE;
-        } else {
-            //de categoriën / type in ander kleur
-            if (value instanceof ToDoType) {
 
-                background = Color.BLUE;
-                foreground = Color.WHITE;
-            } else {
-                background = Color.WHITE;
-                foreground = Color.BLACK;
+        //als het item geselecteerd is (om te kunnen verwijderen bv)
+
+        //de categoriën / type in ander kleur
+        if (value instanceof ToDoType) {
+
+            setText(String.format("%-5s  " + value.toString(), ""));
+            background = Color.BLUE;
+            foreground = Color.WHITE;
+
+            if (isSelected) {
+                background = Color.DARK_GRAY;
+                foreground = Color.BLUE;
             }
-        }
+        } else if(value instanceof ToDoItem){
+            ToDoItem item = (ToDoItem) value;
+            setText(String.format("%-5d%-30s\t", item.getId(), item.getMessage()));
+            background = Color.WHITE;
+            foreground = Color.BLACK;
+            if (isSelected) {
+                background = Color.DARK_GRAY;
+                foreground = Color.BLUE;
+            }
+        }else{
+            setText(value.toString());
+            background = Color.RED;
+            foreground = Color.CYAN;
+       }
+
         setBackground(background);
         setForeground(foreground);
 
+
+
+
         return this;
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.black);
+        g.drawLine(0, getHeight() - 1, getWidth() - 1, getHeight() - 1);
+        g.drawLine(17,0,17,getHeight()-1);
+        
     }
 }

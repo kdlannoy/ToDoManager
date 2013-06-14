@@ -16,6 +16,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+
+//klasse om twee ToDoItems te kunnen vergelijken (om te kunnen sorteren)
 /**
  *
  * @author Kiani
@@ -72,6 +74,7 @@ public class ToDoModel extends DefaultListModel {
         }
         item.setType(getTypeString(item.getType().getType()));
         items.add(item);
+        resetIDs();
         Collections.sort(items, new CustomComparator());
         fireStateChanged();
 
@@ -80,6 +83,32 @@ public class ToDoModel extends DefaultListModel {
     public ToDoType getTypeString(String t) {
         for (ToDoType d : types) {
             if (d.getType().equals(t)) {
+                return d;
+            }
+        }
+        return null;
+    }
+    
+    public ToDoItem getItemById(int t){
+        for(ToDoItem d : items){
+            if(d.getId()==t){
+                return d;
+            }
+        }
+        return null;
+    }
+    
+    public void resetIDs(){
+        int id = 0;
+        for (ToDoItem d : items) {
+            d.setId(id);
+            id++;
+        }
+    }
+    
+    public ToDoItem getItemByString(String toString) {
+        for (ToDoItem d : items) {
+            if (d.getMessage().equals(toString)) {
                 return d;
             }
         }
@@ -123,6 +152,8 @@ public class ToDoModel extends DefaultListModel {
         if(aantal==0){
             removeTypeString(type.getType());
         }
+        
+        resetIDs();
     }
 
     private void removeTypeString(String type) {
@@ -134,9 +165,9 @@ public class ToDoModel extends DefaultListModel {
         }
         
     }
-}
 
-//klasse om twee ToDoItems te kunnen vergelijken (om te kunnen sorteren)
+    
+}
 class CustomComparator implements Comparator<ToDoItem> {
     @Override
     public int compare(ToDoItem o1, ToDoItem o2) {

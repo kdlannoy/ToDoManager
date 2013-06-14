@@ -21,7 +21,7 @@ import java.util.Date;
  * @param message has the message to show for the list
  * @param importance indicatos how important the item is (from a scale from 0-10, 0 meaning not important at all)
  */
-public class ToDoItem implements Serializable{
+public class ToDoItem extends ToDoObject implements Serializable{
     
     private static int totalItems;
     
@@ -35,12 +35,16 @@ public class ToDoItem implements Serializable{
         this.type = type;
         this.message = message;
         totalItems++;
+        id = totalItems;
+        item = true;
     }
 
     public ToDoItem(String text, String text0) {
         this.type = new ToDoType(text);
         this.message = text0;
         totalItems++;
+        id = totalItems;
+        item = true;
     }
     
     public int getId() {
@@ -108,6 +112,10 @@ public class ToDoItem implements Serializable{
     @Override
     public String toString(){
         return message;
+    }
+
+    void setId(int id) {
+        this.id = id;
     }
     
     
