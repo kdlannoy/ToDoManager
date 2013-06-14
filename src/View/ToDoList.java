@@ -10,21 +10,23 @@ import todo.ToDoTypeFilter;
 import todo.ToDoItem;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import todo.ToDoObject;
 
 /**
  *
  * @author Kiani
  */
-public class ToDoList extends JList implements ChangeListener {
+public class ToDoList extends JTable implements ChangeListener {
 
-    private DefaultListModel lijstmd;
+    private DefaultTableModel lijstmd;
     private ToDoTypeFilter filter;
     private ToDoModel model;
 
@@ -32,9 +34,28 @@ public class ToDoList extends JList implements ChangeListener {
         this.model = model;
         this.setModel(model);
         model.addListener(this);
-        lijstmd = (DefaultListModel) this.getModel();
-        this.setCellRenderer(new MyCellRenderer());
-        this.updateList();
+        lijstmd = (DefaultTableModel) this.getModel();
+        DefaultTableCellRenderer r = new MyCellRenderer();
+        this.setDefaultRenderer(ToDoObject.class,r );
+
+
+
+        lijstmd.addColumn(ToDoObject.class);
+        lijstmd.addColumn("Id");
+        lijstmd.addColumn("Message");
+        TableColumn object = getColumnModel().getColumn(0);
+        object.setMaxWidth(0);
+        object.setMinWidth(0);
+        object.setPreferredWidth(0);
+        
+        TableColumn kolom = getColumnModel().getColumn(1);
+        kolom.setCellRenderer(r);
+        kolom.setMaxWidth(20);
+        initList();
+    }
+
+    public final void initList() {
+        updateList();
     }
 
     @Override
@@ -42,98 +63,112 @@ public class ToDoList extends JList implements ChangeListener {
         updateList();
     }
 
-    @Override
     public Object getSelectedValue() {
-        return model.getItemByString(super.getSelectedValue().toString());
+        int indexTable = super.getSelectedRow();
+        ToDoObject b = (ToDoObject) super.getModel().getValueAt(indexTable, 0);
+        if (b.isItem() != -1) {
+            return model.getItemByString(((ToDoItem) b).getMessage());
+        } else {
+            return null;
+        }
 
     }
 
     public void updateList() {
 
         // EDIT, eens Filter geïmplementeerd is, moeten we ervoor zorgen dat in de lijs enkel nog de Types worden weergegeven die in de filter voorkomen
-        lijstmd.removeAllElements();
-        this.removeAll();
-        
-        //add headers
-        lijstmd.addElement("Id   Topic");
-        
-        // add all types
-        for (ToDoType type : model.getTypes()) {
-            lijstmd.addElement(type);
-            // add all tasks
-            for (ToDoItem item : model.getItems()) {
-                if (item.getType() == type) {
-                    lijstmd.addElement(item);
-                }
-            }
+        //lijstmd.removeAllElements();
+        int rowcount = lijstmd.getRowCount();
+        for (int i = 0; i < rowcount; i++) {
+            lijstmd.removeRow(0);
         }
 
 
 
+        //add headers
+        //ToDoHeader t = new ToDoHeader(new String[]{"Id", "Topic / Message"});
 
 
+        //lijstmd.addElement(t);
+        int index = 0;
 
+        // add all types
+        for (ToDoType type : model.getTypes()) {
 
+            //lijstmd.addElement(type);
+            lijstmd.addRow(new Object[]{type, null, type.getType()});
+            index++;
+            // add all tasks
+            for (ToDoItem item : model.getItems()) {
+                if (item.getType() == type) {
+                    lijstmd.addRow(new Object[]{item, item.getId(), item.getMessage()});
+                    index++;
+
+                    //lijstmd.addElement(item);
+                }
+            }
+        }
+        
+        
     }
-}
 
-class MyCellRenderer extends JLabel implements ListCellRenderer<Object> {
+    @Override
+    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        Component c = super.prepareRenderer(renderer, row, column);
 
-    public MyCellRenderer() {
-        setOpaque(true);
-    }
-
-    public Component getListCellRendererComponent(JList<?> list,
-            Object value,
-            int index,
-            boolean isSelected,
-            boolean cellHasFocus) {
+        //  add custom rendering here
 
         Color background = null;
         Color foreground = null;
 
-        //als het item geselecteerd is (om te kunnen verwijderen bv)
-
-        //de categoriën / type in ander kleur
-        if (value instanceof ToDoType) {
-
-            setText(String.format("%-5s  " + value.toString(), ""));
+        //type
+        if (((ToDoObject) lijstmd.getValueAt(row, 0)).isItem() == 0) {
             background = Color.BLUE;
             foreground = Color.WHITE;
-
-            if (isSelected) {
+            if (isRowSelected(row)) {
                 background = Color.DARK_GRAY;
                 foreground = Color.BLUE;
             }
-        } else if(value instanceof ToDoItem){
-            ToDoItem item = (ToDoItem) value;
-            setText(String.format("%-5d%-30s\t", item.getId(), item.getMessage()));
+        } else if (((ToDoObject) lijstmd.getValueAt(row, 0)).isItem() == 1) {
             background = Color.WHITE;
             foreground = Color.BLACK;
-            if (isSelected) {
+            if (isRowSelected(row)) {
                 background = Color.DARK_GRAY;
                 foreground = Color.BLUE;
             }
-        }else{
-            setText(value.toString());
-            background = Color.RED;
-            foreground = Color.CYAN;
-       }
 
-        setBackground(background);
-        setForeground(foreground);
+        }
 
+        //setText(value != null ? value.toString() : "");
+        c.setBackground(background);
+        c.setForeground(foreground);
 
-
-
-        return this;
+        return c;
     }
+}
+class MyCellRenderer extends DefaultTableCellRenderer {
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.black);
-        g.drawLine(0, getHeight() - 1, getWidth() - 1, getHeight() - 1);
-        g.drawLine(17,0,17,getHeight()-1);
+    public MyCellRenderer() {
+        super();
+        setOpaque(true);
+    }
+    
+    
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        JLabel renderedLabel = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        renderedLabel.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+        
+        return renderedLabel;
+        
         
     }
+//    public void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//        g.setColor(Color.black);
+//        g.drawLine(0, getHeight() - 1, getWidth() - 1, getHeight() - 1);
+//        g.drawLine(17,0,17,getHeight()-1);
+//        
+//    }
 }

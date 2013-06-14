@@ -36,7 +36,7 @@ public class ToDoItem extends ToDoObject implements Serializable{
         this.message = message;
         totalItems++;
         id = totalItems;
-        item = true;
+        item = 1;
     }
 
     public ToDoItem(String text, String text0) {
@@ -44,7 +44,7 @@ public class ToDoItem extends ToDoObject implements Serializable{
         this.message = text0;
         totalItems++;
         id = totalItems;
-        item = true;
+        item = 1;
     }
     
     public int getId() {
@@ -68,7 +68,9 @@ public class ToDoItem extends ToDoObject implements Serializable{
     }
     
     
-    
+    public void setId(int i){
+        id = i;
+    }
     /**
      * 
      * @return return how important the task is, from a scale from 0-10 (0 meaning not important at all)
@@ -114,9 +116,17 @@ public class ToDoItem extends ToDoObject implements Serializable{
         return message;
     }
 
-    void setId(int id) {
-        this.id = id;
+    public static void eraseIDs(){
+        totalItems=0;
     }
     
+    @Override
+    public boolean equals(Object obj){
+        //EDIT nog op ID controleren en op dueDate // Importance
+        if(this.getMessage().equals(((ToDoItem)obj).getMessage())){
+            return true;
+        }
+        return false;
+    }
     
 }

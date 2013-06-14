@@ -9,10 +9,17 @@ package todo;
  * @author Kiani
  */
 public abstract class ToDoObject {
-    protected boolean item;
+    //0 = type
+    //1 = item
+    //-1 = header
+    protected int item=-1;
     
-    public boolean isItem(){
+    public int isItem(){
         return item;
     }
     
+    
+    public void setIsItem(int i){
+        item = i;
+    }
 }

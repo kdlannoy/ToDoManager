@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.swing.DefaultListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 
 
 //klasse om twee ToDoItems te kunnen vergelijken (om te kunnen sorteren)
@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
  *
  * @author Kiani
  */
-public class ToDoModel extends DefaultListModel {
+public class ToDoModel extends DefaultTableModel {
 
     /**
      * Lijst van geregistreerde luisteraars.
@@ -34,12 +34,16 @@ public class ToDoModel extends DefaultListModel {
 
     public ToDoModel() {
         settings = LoadSettings.loadSettings();
-
+        loadFromFile();
+    }
+    
+    public void loadFromFile(){
+        items.clear();
+        types.clear();
         ToDoLoader tdl = new ToDoLoader(settings.getFile());
         for (ToDoItem i : tdl.getItems()) {
-            addItem(i);
+            this.addItem(i);
         }
-
     }
 
     /**
@@ -70,12 +74,13 @@ public class ToDoModel extends DefaultListModel {
     public void addItem(ToDoItem item) {
         if (!containsTypeString(item.getType().getType())) {
             types.add(item.getType());
-
+            item.getType().setIsItem(0);
         }
         item.setType(getTypeString(item.getType().getType()));
         items.add(item);
+        item.setIsItem(1);
         resetIDs();
-        Collections.sort(items, new CustomComparator());
+        Collections.sort(items, new SorteerOpIdComparator());
         fireStateChanged();
 
     }
@@ -99,7 +104,9 @@ public class ToDoModel extends DefaultListModel {
     }
     
     public void resetIDs(){
+        
         int id = 0;
+        ToDoItem.eraseIDs();
         for (ToDoItem d : items) {
             d.setId(id);
             id++;
@@ -112,6 +119,7 @@ public class ToDoModel extends DefaultListModel {
                 return d;
             }
         }
+        System.out.println("NOT FOUND");
         return null;
     }
 
@@ -142,7 +150,7 @@ public class ToDoModel extends DefaultListModel {
                 break;
             }
         }
-        Collections.sort(items, new CustomComparator());
+        Collections.sort(items, new SorteerOpMessageComparator());
         int aantal = 0;
         for (ToDoItem i: getItems()){
             if(i.getType().equals(type)){
@@ -168,9 +176,16 @@ public class ToDoModel extends DefaultListModel {
 
     
 }
-class CustomComparator implements Comparator<ToDoItem> {
+class SorteerOpMessageComparator implements Comparator<ToDoItem> {
     @Override
     public int compare(ToDoItem o1, ToDoItem o2) {
         return o1.getMessage().compareTo(o2.getMessage());
+    }
+}
+
+class SorteerOpIdComparator implements Comparator<ToDoItem> {
+    @Override
+    public int compare(ToDoItem o1, ToDoItem o2) {
+        return (o1.getId()<o2.getId())? -1:1;
     }
 }

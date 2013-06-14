@@ -49,7 +49,8 @@ public class ToDoListPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    removeItemModel((ToDoItem) todolijst.getSelectedValue());
+                    //removeItemModel((ToDoItem) todolijst.getSelectedValue());
+                    removeItemModelByString(todolijst.getSelectedValue().toString());
                     writeModel();
                 } catch (Exception ex) {
                     System.out.println("Geen item geselecteerd:\t"+ex);
@@ -76,6 +77,10 @@ public class ToDoListPanel extends JPanel {
 
     protected void removeItemModel(ToDoItem item) {
         model.removeItemString(item.getMessage());
+    }
+    
+    protected void removeItemModelByString(String s){
+        model.removeItemString(s);
     }
 
     public ToDoList getTodolijst() {

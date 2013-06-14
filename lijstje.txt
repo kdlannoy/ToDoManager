@@ -1,0 +1,11 @@
+10
+0---Varia---null---BBQ---0
+1---Varia---null---Boek: mindmaps en shit (vragen aan Tjen)---0
+2---School---null---Cursus de Naeghel afgeleiden en integralen---0
+3---ToDoManager---null---Datum toevoegen---0
+4---ToDoManager---null---Item Creator actief blijven---0
+5---ToDoManager---null---Item Creator keuze uit types en nieuwe type---0
+6---ToDoManager---null---Prioriteit toevoegen---0
+7---ToDoManager---null---Sorteer keuzes (radio buttons?)---0
+8---ToDoManager---null---Tekstvak automatisch volledig geslecteerd bij focus---0
+9---Varia---null---Zeggen tegen papa kraantje boorput---0

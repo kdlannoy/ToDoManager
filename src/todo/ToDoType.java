@@ -17,7 +17,14 @@ public class ToDoType extends ToDoObject implements Serializable {
     public ToDoType(String type) {
         this.type = type;
         numberOfTypes++;
-        item = false;
+        item = 0;
+    }
+    
+    @Override
+    public boolean equals(Object b){
+        if (this.type.equals(((ToDoType)b).getType()))
+                return true;
+        return false;
     }
 
     public String getType() {

@@ -34,7 +34,7 @@ public class ToDoLoader {
         items = new ArrayList<>();
     }
 
-    public void readItems() {
+    protected void readItems() {
         
         try {
             InputStream file = new FileInputStream((filepath.getAbsoluteFile()));

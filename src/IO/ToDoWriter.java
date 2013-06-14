@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import todomanager.WriteListToFile;
 
 /**
  *Schrijft de items weg naar een gespecifieerde locatie
@@ -37,17 +38,16 @@ public class ToDoWriter {
             OutputStream file = new FileOutputStream(filepath);
             
             OutputStream buffer = new BufferedOutputStream(file);
-            ObjectOutput in = new ObjectOutputStream(buffer);
+            ObjectOutput out = new ObjectOutputStream(buffer);
             
             try {
-                //EDIT lelijke code, oplossen!
                 for (ToDoItem toDoItem : items) {
-                    in.writeObject(toDoItem);
+                    out.writeObject(toDoItem);
                 }
                     
                 
             } finally {
-                in.close();
+                out.close();
             }
 
         } catch (FileNotFoundException ex) {
@@ -55,6 +55,7 @@ public class ToDoWriter {
         } catch (IOException ex) {
             Logger.getLogger(ToDoLoader.class.getName()).log(Level.SEVERE, null, ex);
         } 
+        
     }
 
    
