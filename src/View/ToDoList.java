@@ -36,22 +36,25 @@ public class ToDoList extends JTable implements ChangeListener {
         model.addListener(this);
         lijstmd = (DefaultTableModel) this.getModel();
         DefaultTableCellRenderer r = new MyCellRenderer();
-        this.setDefaultRenderer(ToDoObject.class,r );
+        this.setDefaultRenderer(ToDoObject.class, r);
 
 
 
         lijstmd.addColumn(ToDoObject.class);
         lijstmd.addColumn("Id");
         lijstmd.addColumn("Message");
-        TableColumn object = getColumnModel().getColumn(0);
-        object.setMaxWidth(0);
-        object.setMinWidth(0);
-        object.setPreferredWidth(0);
+
         
-        TableColumn kolom = getColumnModel().getColumn(1);
-        kolom.setCellRenderer(r);
-        kolom.setMaxWidth(20);
+        TableColumn kolom = this.columnModel.getColumn(0);
+        kolom.setMaxWidth(0);
+        kolom.setMinWidth(0);
         initList();
+
+        this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        TableColumnAdjuster tca = new TableColumnAdjuster(this);
+        tca.adjustColumns();
+        
+        
     }
 
     public final void initList() {
@@ -108,8 +111,8 @@ public class ToDoList extends JTable implements ChangeListener {
                 }
             }
         }
-        
-        
+
+
     }
 
     @Override
@@ -126,15 +129,15 @@ public class ToDoList extends JTable implements ChangeListener {
             background = Color.BLUE;
             foreground = Color.WHITE;
             if (isRowSelected(row)) {
-                background = Color.DARK_GRAY;
-                foreground = Color.BLUE;
+                background = Color.LIGHT_GRAY;
+                foreground = Color.BLACK;
             }
         } else if (((ToDoObject) lijstmd.getValueAt(row, 0)).isItem() == 1) {
             background = Color.WHITE;
             foreground = Color.BLACK;
             if (isRowSelected(row)) {
-                background = Color.DARK_GRAY;
-                foreground = Color.BLUE;
+                background = Color.LIGHT_GRAY;
+                foreground = Color.BLACK;
             }
 
         }
@@ -146,23 +149,22 @@ public class ToDoList extends JTable implements ChangeListener {
         return c;
     }
 }
+
 class MyCellRenderer extends DefaultTableCellRenderer {
 
     public MyCellRenderer() {
         super();
         setOpaque(true);
     }
-    
-    
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel renderedLabel = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         renderedLabel.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
-        
+
         return renderedLabel;
-        
-        
+
+
     }
 //    public void paintComponent(Graphics g) {
 //        super.paintComponent(g);

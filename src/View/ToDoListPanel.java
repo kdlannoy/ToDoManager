@@ -33,7 +33,7 @@ public class ToDoListPanel extends JPanel {
         super();
         this.model = model;
         this.todolijst = new ToDoList(model);
-        sp = (new JScrollPane(todolijst));
+        sp = (new JScrollPane(todolijst, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         sp.setPreferredSize(new Dimension(250, 500));
         add(sp);
 
