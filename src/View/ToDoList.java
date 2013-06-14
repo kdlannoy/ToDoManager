@@ -50,7 +50,7 @@ public class ToDoList extends JTable implements ChangeListener {
         kolom.setMinWidth(0);
         initList();
 
-        this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        this.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         TableColumnAdjuster tca = new TableColumnAdjuster(this);
         tca.adjustColumns();
         

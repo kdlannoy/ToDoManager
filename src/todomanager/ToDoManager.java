@@ -4,7 +4,7 @@
  */
 package todomanager;
 
-import View.ToDoListPanel;
+import View.ToDoPanel;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import todo.ToDoModel;
@@ -30,7 +30,8 @@ public class ToDoManager {
         final JFrame frame = new JFrame("ToDoManager");
         final ToDoModel model = new ToDoModel();
         
-        ToDoListPanel panel = new ToDoListPanel(model);
+        //ToDoListPanel panel = new ToDoListPanel(model);
+        ToDoPanel panel = new ToDoPanel(model);
         frame.getContentPane().add(panel);
         
         frame.getRootPane().setDefaultButton(panel.getButton());
