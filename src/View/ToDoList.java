@@ -10,14 +10,20 @@ import todo.ToDoTypeFilter;
 import todo.ToDoItem;
 import java.awt.Color;
 import java.awt.Component;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import todo.TabelLuisteraar;
 import todo.ToDoObject;
 
 /**
@@ -37,24 +43,27 @@ public class ToDoList extends JTable implements ChangeListener {
         lijstmd = (DefaultTableModel) this.getModel();
         DefaultTableCellRenderer r = new MyCellRenderer();
         this.setDefaultRenderer(ToDoObject.class, r);
+        
 
 
 
         lijstmd.addColumn(ToDoObject.class);
         lijstmd.addColumn("Id");
         lijstmd.addColumn("Message");
+        lijstmd.addColumn("Due date");
 
-        
+
         TableColumn kolom = this.columnModel.getColumn(0);
         kolom.setMaxWidth(0);
         kolom.setMinWidth(0);
         initList();
 
-        this.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableColumnAdjuster tca = new TableColumnAdjuster(this);
         tca.adjustColumns();
-        
-        
+
+       // this.getModel().addTableModelListener(new TabelLuisteraar(model));
+
     }
 
     public final void initList() {
@@ -95,6 +104,8 @@ public class ToDoList extends JTable implements ChangeListener {
         //lijstmd.addElement(t);
         int index = 0;
 
+        SimpleDateFormat ft = new SimpleDateFormat("E dd/MM/yyyy");
+
         // add all types
         for (ToDoType type : model.getTypes()) {
 
@@ -104,6 +115,9 @@ public class ToDoList extends JTable implements ChangeListener {
             // add all tasks
             for (ToDoItem item : model.getItems()) {
                 if (item.getType() == type) {
+                    if(item.getDueDate()!=null)
+                    lijstmd.addRow(new Object[]{item, item.getId(), item.getMessage(), ft.format(item.getDueDate())});
+                    else
                     lijstmd.addRow(new Object[]{item, item.getId(), item.getMessage()});
                     index++;
 
@@ -148,6 +162,8 @@ public class ToDoList extends JTable implements ChangeListener {
 
         return c;
     }
+    
+    
 }
 
 class MyCellRenderer extends DefaultTableCellRenderer {

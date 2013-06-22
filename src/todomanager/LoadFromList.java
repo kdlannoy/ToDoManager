@@ -12,7 +12,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import todo.ToDoItem;
@@ -22,19 +24,20 @@ import todo.ToDoItem;
  * @author Kiani
  */
 public class LoadFromList {
-     public static void main(String[] args) throws ParseException {
-         readFromFile();
-        
+
+    public static void main(String[] args) throws ParseException {
+        readFromFile();
+
     }
-     
-     public static void readFromFile(){
-         ArrayList<ToDoItem> lijstje = new ArrayList<ToDoItem>();
-        
+
+    public static void readFromFile() {
+        ArrayList<ToDoItem> lijstje = new ArrayList<ToDoItem>();
+
         try {
             BufferedReader br = new BufferedReader(new FileReader("lijstje.txt"));
             StringBuilder sb = new StringBuilder();
             int aantallijnen = Integer.parseInt(br.readLine());
-            
+
             for (int i = 0; i < aantallijnen; i++) {
                 String lijn = br.readLine();
                 System.out.println(lijn);
@@ -43,22 +46,30 @@ public class LoadFromList {
                 delen = lijn.split(delimeter);
                 System.out.println(delen);
                 ToDoItem item = new ToDoItem(delen[1], delen[3]);
-                //item.setDueDate(delen[2]));
+
+                String dateString = delen[2];
+                if (!"null".equals(delen[2])) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date convertedDate = dateFormat.parse(dateString);
+                    item.setDueDate(convertedDate);
+                }
                 item.setImportance(Integer.parseInt(delen[4]));
                 lijstje.add(item);
             }
             br.close();
-            
-            ToDoWriter writer = new  ToDoWriter(new File("todo.list"));
+
+            ToDoWriter writer = new ToDoWriter(new File("todo.list"));
             writer.writeItems(lijstje);
-            
-            
+
+
 
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ToDoLoader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ToDoLoader.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(LoadFromList.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }
+    }
 }

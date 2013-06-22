@@ -31,6 +31,7 @@ public class ToDoModel extends DefaultTableModel {
     private List<ToDoType> types = new ArrayList<>();
     private List<ToDoItem> items = new ArrayList<>();
     private ToDoSetting settings;
+    private Comparator comparator = new SorteerOpDatumComparator();
 
     public ToDoModel() {
         settings = LoadSettings.loadSettings();
@@ -80,7 +81,7 @@ public class ToDoModel extends DefaultTableModel {
         items.add(item);
         item.setIsItem(1);
         resetIDs();
-        Collections.sort(items, new SorteerOpIdComparator());
+        Collections.sort(items, comparator);
         fireStateChanged();
 
     }
@@ -150,7 +151,7 @@ public class ToDoModel extends DefaultTableModel {
                 break;
             }
         }
-        Collections.sort(items, new SorteerOpMessageComparator());
+        Collections.sort(items, comparator);
         int aantal = 0;
         for (ToDoItem i: getItems()){
             if(i.getType().equals(type)){
@@ -168,6 +169,7 @@ public class ToDoModel extends DefaultTableModel {
         for (ToDoType i : getTypes()) {
             if (i.getType().equals(type)) {
                 types.remove(i);
+                Collections.sort(items, comparator);
                 return;
             }
         }
@@ -181,6 +183,28 @@ class SorteerOpMessageComparator implements Comparator<ToDoItem> {
     public int compare(ToDoItem o1, ToDoItem o2) {
         return o1.getMessage().compareTo(o2.getMessage());
     }
+}
+
+
+class SorteerOpDatumComparator implements Comparator<ToDoItem>{
+
+    @Override
+    public int compare(ToDoItem o1, ToDoItem o2) {
+        if(o1.getDueDate()==null){
+            if(o2.getDueDate()!=null){
+                return 1;
+            }else{
+                return (o1.getId()<o2.getId())? -1:1;
+            }
+        }else{
+            if(o2.getDueDate()!=null){
+                return o1.getDueDate().compareTo(o2.getDueDate());
+            }else{
+                return -1;
+            }
+        }
+    }
+    
 }
 
 class SorteerOpIdComparator implements Comparator<ToDoItem> {

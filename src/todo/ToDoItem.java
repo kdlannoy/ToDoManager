@@ -27,7 +27,7 @@ public class ToDoItem extends ToDoObject implements Serializable{
     
     private int id;
     private ToDoType type;
-    private Date dueDate;
+    private Date dueDate = null;
     private String message;
     private int importance;
 
@@ -38,12 +38,30 @@ public class ToDoItem extends ToDoObject implements Serializable{
         id = totalItems;
         item = 1;
     }
+    
+    public ToDoItem(ToDoType type, String message, Date datum) {
+        this.type = type;
+        this.message = message;
+        totalItems++;
+        id = totalItems;
+        this.dueDate = datum;
+        item = 1;
+    }
 
     public ToDoItem(String text, String text0) {
         this.type = new ToDoType(text);
         this.message = text0;
         totalItems++;
         id = totalItems;
+        item = 1;
+    }
+    
+    public ToDoItem(String text, String text0, Date datum) {
+        this.type = new ToDoType(text);
+        this.message = text0;
+        totalItems++;
+        id = totalItems;
+        this.dueDate = datum;
         item = 1;
     }
     
@@ -88,6 +106,9 @@ public class ToDoItem extends ToDoObject implements Serializable{
     }
 
     public int setDueDate(Date dueDate) {
+        if(this.dueDate==null){
+            return 0;
+        }
         if(dueDate.before(new Date())){
             System.out.println("The date is already past");
             return -1;

@@ -51,7 +51,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
         setColumnHeaderIncluded(true);
         setColumnDataIncluded(true);
         setOnlyAdjustLarger(false);
-        setDynamicAdjustment(false);
+        setDynamicAdjustment(true);
         installActions();
     }
 

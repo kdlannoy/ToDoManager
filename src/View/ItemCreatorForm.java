@@ -5,6 +5,7 @@
 package View;
 
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import todo.ToDoItem;
@@ -24,6 +25,7 @@ public class ItemCreatorForm extends javax.swing.JPanel {
         initComponents();
         this.model = model;
         jButton1.setAction(new SubmitAction("Submit"));
+        
     }
 
     public JButton getButton() {
@@ -39,10 +41,15 @@ public class ItemCreatorForm extends javax.swing.JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            //check on correct input
+            if(jTextField1.getText().equals("") || jTextField1.getText().equals("")){
+                return;
+            }
+            Date datum = jDateChooser2.getDate();
             if (!model.containsTypeString(jTextField1.getText())) {
-                model.addItem(new ToDoItem(jTextField1.getText(), jTextField2.getText()));
+                model.addItem(new ToDoItem(jTextField1.getText(), jTextField2.getText(), datum));
             } else {
-                model.addItem(new ToDoItem(model.getTypeString(jTextField1.getText()), jTextField2.getText()));
+                model.addItem(new ToDoItem(model.getTypeString(jTextField1.getText()), jTextField2.getText(), datum));
             }
 
             model.writeItems();
@@ -63,6 +70,7 @@ public class ItemCreatorForm extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
 
         setMaximumSize(new java.awt.Dimension(250, 120));
         setMinimumSize(new java.awt.Dimension(250, 120));
@@ -86,9 +94,13 @@ public class ItemCreatorForm extends javax.swing.JPanel {
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,13 +113,16 @@ public class ItemCreatorForm extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField1;
